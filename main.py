@@ -1,5 +1,6 @@
 import win32clipboard as cb
 import random
+import sys
 
 def copy_html(rawText, htmlFragment):
     cb.OpenClipboard()
@@ -28,8 +29,11 @@ def randomHexColor():
     b = int(random.random()*256)
     return "#"+hex(r)[2:]+hex(g)[2:]+hex(b)[2:]
     
+filePath = "message.txt"
+if len(sys.argv) == 2:
+    filePath = sys.argv[1]
 htmlFragment = ''
-msg = open("message.txt", encoding="utf-8").read()
+msg = open(filePath, encoding="utf-8").read()
 for c in msg:
     if c == "\n": 
         htmlFragment += "<br>"
@@ -38,6 +42,7 @@ for c in msg:
     htmlFragment += '<span style="color: '+randomHexColor()+'; background: '+ randomHexColor()+';font-size: '+ randSize+'px;">'
     htmlFragment += c+"</span>"
 
+htmlFragment += '<audio controls><source src="https://raw.githubusercontent.com/elvanaud/Epileptor/main/message.wav" type="audio/wav"><source src="horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>'
 
 copy_html(msg, htmlFragment)
 
